@@ -4,7 +4,7 @@ Light Messenger is an IoT kit for a couple of friends having bi-directional comm
 * Select light different color by rotation; 
 
 * Send your current selected light color by single-tap;
-* Play the light color(s) you received;
+* Play the light color(s) you received by double-tap;
 
 
 
