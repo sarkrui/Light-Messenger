@@ -1,0 +1,216 @@
+//-----------------------------------
+//---------NeoPixel LED HERE---------
+//-----------------------------------
+#include <Adafruit_NeoPixel.h>
+#define PIN            D3
+#define NUMPIXELS      20
+Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
+unsigned int dispMode = 0;
+byte blinkColorQueue[256];//Array for blinking
+
+//-------------Firebase --------------------
+//--------Data structure--------------------
+//--------/fireflies------------------------
+//-------------/Philips (id:0)
+//---------------------/dispMode
+//------------------------------/0: Playing Message Mode
+//------------------------------/1: Idle Mode
+//---------------------/tapped
+//------------------------------------------
+//-------------/TU Eindhoven (id:1)
+//-------------------------/dispMode
+//------------------------------/0: Playing Message Mode
+//------------------------------/1: Idle Mode
+//---------------------/tapped
+//------------------------------------------
+
+//FirebaseESP8266.h must be included before ESP8266WiFi.h
+#include "FirebaseESP8266.h"
+#include <ESP8266WiFi.h>
+#include <Arduino.h>
+#include "FirebaseJson.h"
+#define FIREBASE_HOST "xxxxxxxx.firebaseio.com" //Realtime database host without https:// 
+#define FIREBASE_AUTH ""    //Projects/Settings/Service accounts/Database secrets
+#define WIFI_SSID "YOUR_WIFI_NAME"
+#define WIFI_PASSWORD "YOUR_WIFI_CODE"
+
+//#define DEVICE_ID 1                      //id: 1 for Philips
+#define DEVICE_ID 2                   //id: 2 for TU/e
+
+#if (DEVICE_ID == 1)
+const String device_id = "/philips";
+const String remote_device_id = "/tue";
+#endif
+
+#if (DEVICE_ID == 2)
+const String device_id = "/tue";
+const String remote_device_id = "/philips";
+#endif
+
+String root = "/fireflies/";
+String philips = "/fireflies/philips";
+String tue = "/fireflies/tue";
+String device_local_path;                //define device path for ESP to push to
+String device_remote_path;               //define device path for ESP to pull from
+FirebaseData firebaseData;               //Declare the Firebase Data object in global scope
+FirebaseJson setupJSON;
+
+//-----------------------------------
+//---------HEX Colors ---------------
+//-----------------------------------
+
+unsigned long colorArray[] = {
+  0x330000, 0xDD4500, 0xAA8000,
+  0xDDDD00, 0x00DD30, 0x00DDDD,
+  0xAAAA99, 0x000044, 0x5500DD,
+  0x500050
+};
+
+//-----------------------------------
+//---------Rotary Coder HERE---------
+//-----------------------------------
+
+#include <SimpleRotary.h>
+#define buttonPin D7             // digital input pin
+SimpleRotary rotary(D5, D6, D9); // Pin A, Pin B, Button Pin, D9 serves as a dummy pin
+
+byte i, j;
+byte RotaryPosition = 127;
+byte *RotaryPositionPointer = &RotaryPosition;
+int ColorIndex = 0;
+int *ColorIndexPointer = &ColorIndex;
+
+// Button timing variables
+int debounce = 50;          // ms debounce period to prevent flickering when pressing or releasing the button
+int DCgap = 500;            // max ms between clicks for a double click event
+int holdTime = 2000;        // ms hold period: how long to wait for press+hold event
+int longHoldTime = 5000;    // ms long hold period: how long to wait for press+hold event
+
+// Button variables
+boolean buttonVal = HIGH;   // value read from button
+boolean buttonLast = HIGH;  // buffered value of the button's previous state
+boolean DCwaiting = false;  // whether we're waiting for a double click (down)
+boolean DConUp = false;     // whether to register a double click on next release, or whether to wait and click
+boolean singleOK = true;    // whether it's OK to do a single click
+long downTime = -1;         // time the button was pressed down
+long upTime = -1;           // time the button was released
+boolean ignoreUp = false;   // whether to ignore the button release because the click+hold was triggered
+boolean waitForUp = false;        // when held, whether to wait for the up event
+boolean holdEventPast = false;    // whether or not the hold event happened already
+boolean longHoldEventPast = false;// whether or not the long hold event happened already
+
+//-----------------------------------
+//----Super Rainbow Detect HERE------
+//-----------------------------------
+int CWTimes = 0;
+int CCWTimes = 0;
+int PushTimes = 0;
+int RotateCount = 0; //initialize RotateCount number for SuperRainbowDetect()
+
+//-----------------------------------
+//-----Queue Replay Detect HERE-----
+//-----------------------------------
+boolean tapped = false;
+byte actualQueueSize = 0;    //Real actualQueueSize
+
+//-----------------------------------
+//-----Timer for Network diagnose----
+//-----------------------------------
+unsigned long startMillis = 0;
+unsigned long currentMillis = 0;
+int timeBetweenSamples = 5000;
+
+// put your setup code here, to run once:
+void setup() {
+
+  Serial.begin(115200);
+  WPAPersonalInit();
+
+  //Output device ID
+  Serial.println();
+  Serial.print("This is device: ");
+  Serial.print(device_id);
+  Serial.print("\n");
+
+  //Firebase connectivity
+  Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
+  Firebase.reconnectWiFi(true);
+  //Set database read timeout to 1 minute (max 15 minutes)
+  Firebase.setReadTimeout(firebaseData, 1000 * 60);
+  //tiny, small, medium, large and unlimited.
+  //Size and its write timeout e.g. tiny (1s), small (10s), medium (30s) and large (60s).
+  Firebase.setwriteSizeLimit(firebaseData, "small");
+
+  //DispInit
+  pixels.begin(); // This initializes the NeoPixel library.
+  dispMode = 0;
+
+  // Set button input pin
+  pinMode(buttonPin, INPUT_PULLUP);
+}
+
+//-------------------------/dispMode
+//------------------------------/0: dimmed light mode(color defined by users)
+//------------------------------/1: Playing Message Mode ()
+
+
+void displayShow() {
+
+  //Playing Message Mode
+  if (dispMode == 1) {
+
+    //temp variables for breathing timing
+    byte minLight = 5;
+    byte maxLight = 90;
+    byte interval = 25;
+
+    for (byte i = 0; i < actualQueueSize && actualQueueSize != 0 && blinkColorQueue[i] != 404; i++) {
+      for (byte j = minLight; j <= maxLight; j++) {
+        oneLed(colorArray[blinkColorQueue[i]], 0); //set all Leds color
+        pixels.setBrightness(j);
+        pixels.show();
+        delay(interval);
+      }
+      oneLed(colorArray[blinkColorQueue[i]], 0); //set all Leds color
+      pixels.setBrightness(maxLight);
+      delay(3000);
+      for (byte j = maxLight; j >= minLight ; j--) {
+        oneLed(colorArray[blinkColorQueue[i]], 0); //set all Leds color
+        pixels.setBrightness(j);
+        pixels.show();
+        delay(interval);
+      }
+    }
+
+    //empty local queue when
+    //the local queue has been played once
+    emptyLocalQueue();
+    //set dispMode back to Idle mode
+    dispMode = 0;
+  }
+
+  //Idle Mode
+  else {
+    //Checks if rotaryencoder has been rotated
+    RotaryEncoder();
+
+    //Constantly assigning the oneLed color
+    ////set all Leds color
+    oneLed(colorArray[*ColorIndexPointer], 0);
+
+    //set brightness
+    pixels.setBrightness(40);
+    //sends the updated pixel color to the hardware.
+    pixels.show();
+    delay(15);
+  }
+}
+
+void loop() {
+
+  //Breathing mode or flashing mode
+  displayShow();
+  //check every 5s whether the esp is connected to Internet
+  checkNetwork();
+
+}
