@@ -1,10 +1,10 @@
 # Light Messenger
-Light Messenger is an IoT kit for a couple of friends having bi-directional communication with colors. It allows you to 
+As we might live apart with our closed friends due to some reality resons which could be studying aboard, business travel, so on. To compensate for the missed contact with a certain relationship, I created Light Messenger, an IoT kit for a couple of friends having bi-directional communication with colors. With it, you can 1) select light different colors by rotation; 2) send your current selected light color by a single-tap; 3) or review the light color(s) the other sends by a double-tap.
 
-* Select light different color by rotation; 
 
-* Send your current selected light color by single-tap;
-* Play the light color(s) you received by double-tap;
+
+### Demo
+[![IMAGE ALT TEXT HERE](https://oss.pxing.design/Videos/video_thumbnail/Light-messenger_thumbnail.jpg?x-oss-process=style%2Flarge)](https://video.pxing.design/Videos/Light-Messenger_Demo.m4v)
 
 
 
@@ -16,8 +16,8 @@ Light Messenger is an IoT kit for a couple of friends having bi-directional comm
 #define WIFI_SSID "YOUR_WIFI_NAME"
 #define WIFI_PASSWORD "YOUR_WIFI_CODE"
 
-#define DEVICE_ID 1 
-//#define DEVICE_ID 2                  
+#define DEVICE_ID 1 //YOUR_ID
+//#define DEVICE_ID 2 ///YOUR_COUPLE_ID                  
 
 #if (DEVICE_ID == 1)
 const String device_id = "/YOUR_NAME";
@@ -42,4 +42,10 @@ const String remote_device_id = "/YOUR_NAME";
 |Arduino.h| 1.8.10 SDK |
 |FirebaseJson.h| 2.2.9 |
 |SimpleRotary.h| 1.1.2 |
+
+
+
+### Credit
+
+This is a give away for a left professor, Saskia Bakker from the TU Eindhoven. Although I redesigned completely the software layer, the physical form was heavily built upon her Ph.D. prototope, **Fireflies**. Besides, you could find my Wizard of Oz for the [initial demo](https://pxing.design/demo-on-saskias-farewell/) on her Goodbye party; I would like give **@mobizt** credit for developing the [Firebase Realtime Database library for ESP8266](https://github.com/mobizt/Firebase-ESP8266) as well as his time in fixing bugs. 
 
