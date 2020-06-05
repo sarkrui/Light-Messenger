@@ -4,7 +4,7 @@ As we might live apart with our closed friends due to some reality resons which 
 
 
 ### Demo
-[![IMAGE ALT TEXT HERE](https://oss.pxing.design/Videos/video_thumbnail/Light-messenger_thumbnail.jpg?x-oss-process=style%2Flarge)](https://video.pxing.design/Videos/Light-Messenger_Demo.m4v)
+[![IMAGE ALT TEXT HERE](https://i.loli.net/2020/06/05/7GHx2AzFbREiuD9.jpg)](https://video.pxing.design/Videos/Light-Messenger_Demo.m4v)
 
 
 
