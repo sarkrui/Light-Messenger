@@ -23,28 +23,36 @@ byte blinkColorQueue[256];//Array for blinking
 //------------------------------/1: Idle Mode
 //---------------------/tapped
 //------------------------------------------
-
 //FirebaseESP8266.h must be included before ESP8266WiFi.h
+
+
 #include "FirebaseESP8266.h"
 #include <ESP8266WiFi.h>
+#include <DNSServer.h>            //Local DNS Server used for redirecting all requests to the configuration portal
+#include <ESP8266WebServer.h>     //Local WebServer used to serve the configuration portal
+#include <WiFiManager.h>          //https://github.com/tzapu/WiFiManager WiFi Configuration Magic
 #include <Arduino.h>
 #include "FirebaseJson.h"
-#define FIREBASE_HOST "xxxxxxxx.firebaseio.com" //Realtime database host without https:// 
-#define FIREBASE_AUTH ""    //Projects/Settings/Service accounts/Database secrets
-#define WIFI_SSID "YOUR_WIFI_NAME"
-#define WIFI_PASSWORD "YOUR_WIFI_CODE"
 
-//#define DEVICE_ID 1                      //id: 1 for Philips
-#define DEVICE_ID 2                   //id: 2 for TU/e
+#define FIREBASE_HOST "xxxxxxx.firebaseio.com" //Realtime database host without https:// 
+#define FIREBASE_AUTH ""    //Projects/Settings/Service accounts/Database secrets
+
+#define DEVICE_ID 1                 //id: 1 for Person A
+//#define DEVICE_ID 2               //id: 2 for Person B
+
+#define SoftAP_SSID "Light-Messenger"
 
 #if (DEVICE_ID == 1)
 const String device_id = "/philips";
 const String remote_device_id = "/tue";
+const String soft_ssid = "Fireflies-Philips";
 #endif
 
 #if (DEVICE_ID == 2)
 const String device_id = "/tue";
 const String remote_device_id = "/philips";
+const String soft_ssid = "Fireflies-TU/e";
+
 #endif
 
 String root = "/fireflies/";
@@ -66,13 +74,15 @@ unsigned long colorArray[] = {
   0x500050
 };
 
+
+
 //-----------------------------------
 //---------Rotary Coder HERE---------
 //-----------------------------------
 
 #include <SimpleRotary.h>
 #define buttonPin D7             // digital input pin
-SimpleRotary rotary(D5, D6, D9); // Pin A, Pin B, Button Pin, D9 serves as a dummy pin
+SimpleRotary rotary(D5, D6, D9); // Pin A, Pin B, Button Pin
 
 byte i, j;
 byte RotaryPosition = 127;
@@ -124,8 +134,17 @@ int timeBetweenSamples = 5000;
 void setup() {
 
   Serial.begin(115200);
-  WPAPersonalInit();
+  Serial.println("\n Starting");
+  // Set button input pin
+  pinMode(buttonPin, INPUT_PULLUP);
+  
+  // Hold 5 seconds for trigger detection
+  startMillis = millis();
+  while (millis() - startMillis <= 5000) {
+    onDemandAP();
+  }
 
+  autoAP();
   //Output device ID
   Serial.println();
   Serial.print("This is device: ");
@@ -141,76 +160,16 @@ void setup() {
   //Size and its write timeout e.g. tiny (1s), small (10s), medium (30s) and large (60s).
   Firebase.setwriteSizeLimit(firebaseData, "small");
 
-  //DispInit
-  pixels.begin(); // This initializes the NeoPixel library.
-  dispMode = 0;
-
-  // Set button input pin
-  pinMode(buttonPin, INPUT_PULLUP);
-}
-
-//-------------------------/dispMode
-//------------------------------/0: dimmed light mode(color defined by users)
-//------------------------------/1: Playing Message Mode ()
-
-
-void displayShow() {
-
-  //Playing Message Mode
-  if (dispMode == 1) {
-
-    //temp variables for breathing timing
-    byte minLight = 5;
-    byte maxLight = 90;
-    byte interval = 25;
-
-    for (byte i = 0; i < actualQueueSize && actualQueueSize != 0 && blinkColorQueue[i] != 404; i++) {
-      for (byte j = minLight; j <= maxLight; j++) {
-        oneLed(colorArray[blinkColorQueue[i]], 0); //set all Leds color
-        pixels.setBrightness(j);
-        pixels.show();
-        delay(interval);
-      }
-      oneLed(colorArray[blinkColorQueue[i]], 0); //set all Leds color
-      pixels.setBrightness(maxLight);
-      delay(3000);
-      for (byte j = maxLight; j >= minLight ; j--) {
-        oneLed(colorArray[blinkColorQueue[i]], 0); //set all Leds color
-        pixels.setBrightness(j);
-        pixels.show();
-        delay(interval);
-      }
-    }
-
-    //empty local queue when
-    //the local queue has been played once
-    emptyLocalQueue();
-    //set dispMode back to Idle mode
+  // Initializing light strip only when ESP's connected to the Internet
+  // To avoid Trigger pin conflict for demandAP configuration
+  if (WiFi.status() == WL_CONNECTED) {
+    pixels.begin(); // This initializes the NeoPixel library.
     dispMode = 0;
-  }
-
-  //Idle Mode
-  else {
-    //Checks if rotaryencoder has been rotated
-    RotaryEncoder();
-
-    //Constantly assigning the oneLed color
-    ////set all Leds color
-    oneLed(colorArray[*ColorIndexPointer], 0);
-
-    //set brightness
-    pixels.setBrightness(40);
-    //sends the updated pixel color to the hardware.
-    pixels.show();
-    delay(15);
   }
 }
 
 void loop() {
-
   //Breathing mode or flashing mode
   displayShow();
-  //check every 5s whether the esp is connected to Internet
   checkNetwork();
-
 }
