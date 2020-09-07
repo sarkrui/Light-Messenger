@@ -5,13 +5,13 @@ As we might live apart with our closed friends due to some reality resons which 
 
 ### Use Demo
 
-[![IMAGE ALT TEXT HERE](https://i.loli.net/2020/06/05/7GHx2AzFbREiuD9.jpg)](https://video.pxing.design/Videos/Light-Messenger_Demo.m4v)
+[![IMAGE ALT TEXT HERE](https://i.loli.net/2020/06/05/7GHx2AzFbREiuD9.jpg)](https://vimeo.com/421278858)
 
 
 
 ### Configuration Demo
 
-[![IMAGE ALT TEXT HERE](https://i.imgur.com/DCgfktt.jpg)](https://youtu.be/JGAoeGyZTJo)
+[![IMAGE ALT TEXT HERE](https://i.imgur.com/DCgfktt.jpg)](https://youtu.be/VrIc5pnAz7s)
 
 
 
