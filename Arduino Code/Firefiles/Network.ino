@@ -1,20 +1,42 @@
-void onDemandAP() {
-  //if double click, enters demandAP configuration
+// Light Indicator for reset
+void bootSignal(bool state) {
+
+  switch (state) {
+    case true:
+      oneLed(0x000000, 0);
+      pixels.show();
+      break;
+
+    case false:
+      oneLed(0x220000, 0);
+      pixels.show();
+      break;
+
+    default:
+
+      break;
+  }
+}
+
+//if double click, enters WiFiManagerReset Program
+void wifiManagerReset() {
+
   byte demandTrigger = 0;
   demandTrigger = checkButton();
-  //if single click, update colorQueue to the remote device
-  if (demandTrigger == 1) {
-    Serial.println("Single Click!");
-  }
-
+  delay(50);
   if (demandTrigger == 2) {
     Serial.println("Double Click!");
     //reset settings - for testing
     WiFiManager wifiManager;
     wifiManager.resetSettings();
   }
-  Serial.print(".");
-  delay(50);
+  // Hold  seconds for trigger detection
+  if (millis() - signalMillis >= 200) {
+    //Serial.print(".");
+    bootSignal(signalState);
+    signalState = !signalState;
+    signalMillis = millis();
+  }
 }
 
 void autoAP() {

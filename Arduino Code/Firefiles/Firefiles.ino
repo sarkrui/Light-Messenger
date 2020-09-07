@@ -97,6 +97,7 @@ int holdTime = 2000;        // ms hold period: how long to wait for press+hold e
 int longHoldTime = 5000;    // ms long hold period: how long to wait for press+hold event
 
 // Button variables
+boolean signalState = false;// variable for signalState during bootup
 boolean buttonVal = HIGH;   // value read from button
 boolean buttonLast = HIGH;  // buffered value of the button's previous state
 boolean DCwaiting = false;  // whether we're waiting for a double click (down)
@@ -124,10 +125,11 @@ boolean tapped = false;
 byte actualQueueSize = 0;    //Real actualQueueSize
 
 //-----------------------------------
-//-----Timer for Network diagnose----
+//-----Timer Variables --------------
 //-----------------------------------
 unsigned long startMillis = 0;
 unsigned long currentMillis = 0;
+unsigned long signalMillis = 0;
 int timeBetweenSamples = 5000;
 
 // put your setup code here, to run once:
@@ -137,13 +139,20 @@ void setup() {
   Serial.println("\n Starting");
   // Set button input pin
   pinMode(buttonPin, INPUT_PULLUP);
-  
+
+  // This initializes the NeoPixel library.
+  pixels.begin();
+  dispMode = 0;
+
+
   // Hold 5 seconds for trigger detection
   startMillis = millis();
+  signalMillis = millis();
   while (millis() - startMillis <= 5000) {
-    onDemandAP();
+    wifiManagerReset();
   }
 
+  //If no wifiManagerReset() required, enters autoAP
   autoAP();
   //Output device ID
   Serial.println();
@@ -159,13 +168,6 @@ void setup() {
   //tiny, small, medium, large and unlimited.
   //Size and its write timeout e.g. tiny (1s), small (10s), medium (30s) and large (60s).
   Firebase.setwriteSizeLimit(firebaseData, "small");
-
-  // Initializing light strip only when ESP's connected to the Internet
-  // To avoid Trigger pin conflict for demandAP configuration
-  if (WiFi.status() == WL_CONNECTED) {
-    pixels.begin(); // This initializes the NeoPixel library.
-    dispMode = 0;
-  }
 }
 
 void loop() {
