@@ -13,8 +13,7 @@ As we might live apart with our closed friends due to some reality resons which 
 ```c++
 #define FIREBASE_HOST "xxxxxxxx.firebaseio.com" //Realtime database host without https:// 
 #define FIREBASE_AUTH ""    //Projects/Settings/Service accounts/Database secrets
-#define WIFI_SSID "YOUR_WIFI_NAME"
-#define WIFI_PASSWORD "YOUR_WIFI_CODE"
+#define SoftAP_SSID "ANY_NAME_YOU_PREFER"
 
 #define DEVICE_ID 1 //YOUR_ID
 //#define DEVICE_ID 2 ///YOUR_COUPLE_ID                  
@@ -39,15 +38,17 @@ const String remote_device_id = "/YOUR_NAME";
 |Adafruit_NeoPixel.h| 1.3.3 |
 |FirebaseESP8266.h| 2.7.9 |
 |ESP8266WiFi.h| 2.6.3 |
-|Arduino.h| 1.8.10 SDK |
+|Arduino.h| 1.8.13 SDK |
 |FirebaseJson.h| 2.2.9 |
 |SimpleRotary.h| 1.1.2 |
+|[WiFIManager](https://github.com/tzapu/WiFiManager) by [tzapu](https://github.com/tzapu)| 0.15.0 |
 
 
 
 ### To-do
 
-- [ ] Incorporate [AutoConnect](https://github.com/Hieromon/AutoConnect) for WLAN configuration at run time
+- [x] Incorporate [AutoConnect](https://github.com/Hieromon/AutoConnect) for WLAN configuration at run time
+- [ ] Adding instrction for connecting to Wi-Fi and restoring credentials 
 - [ ] Construct an OOCSI-based version for better latency in Europe
 - [ ] Build 3D printed model to replace the laser cut base
 
