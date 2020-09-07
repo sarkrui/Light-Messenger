@@ -1,10 +1,17 @@
 # Light Messenger
-As we might live apart with our closed friends due to some reality resons which could be studying aboard, business travel, so on. To compensate for the missed contact with a certain relationship, I created Light Messenger, an IoT kit for a couple of friends having bi-directional communication with colors. With it, you can 1) select light different colors by rotation; 2) send your current selected light color by a single-tap; 3) or review the light color(s) the other sends by a double-tap.
+As we might live apart with our closed friends due to some reality resons which could be studying aboard, business travel, so on. To compensate for the missed contact with a certain relationship, I created Light Messenger, an IoT kit for a couple of friends having bi-directional communication with different light colors. With this kit, you can 1) select light different colors by rotation; 2) send your current selected light color by a single-tap; 3) or review the light color(s) the other sends by a double-tap.
 
 
 
-### Demo
+### Use Demo
+
 [![IMAGE ALT TEXT HERE](https://i.loli.net/2020/06/05/7GHx2AzFbREiuD9.jpg)](https://video.pxing.design/Videos/Light-Messenger_Demo.m4v)
+
+
+
+### Configuration Demo
+
+[![IMAGE ALT TEXT HERE](https://i.imgur.com/DCgfktt.jpg)](https://youtu.be/JGAoeGyZTJo)
 
 
 
@@ -48,7 +55,7 @@ const String remote_device_id = "/YOUR_NAME";
 ### To-do
 
 - [x] Incorporate [AutoConnect](https://github.com/Hieromon/AutoConnect) for WLAN configuration at run time
-- [ ] Adding instrction for connecting to Wi-Fi and restoring credentials 
+- [x] Adding instrction for connecting to Wi-Fi and restoring credentials 
 - [ ] Construct an OOCSI-based version for better latency in Europe
 - [ ] Build 3D printed model to replace the laser cut base
 
