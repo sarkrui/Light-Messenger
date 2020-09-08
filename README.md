@@ -11,7 +11,7 @@ As we might live apart with our closed friends due to some reality resons which 
 
 ### Configuration Demo
 
-[![IMAGE ALT TEXT HERE](https://i.imgur.com/DCgfktt.jpg)](https://youtu.be/VrIc5pnAz7s)
+[![IMAGE ALT TEXT HERE](https://i.imgur.com/Pujw7Ju.jpg)](https://vimeo.com/455801532)
 
 
 
