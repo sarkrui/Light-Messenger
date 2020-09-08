@@ -22,3 +22,19 @@ void doublepressFeedback() {
   pixels.show();
   delay(120);
 }
+
+void configEntered() {
+
+  // Lock signal color to [singalColor]
+  Serial.println("**Entered Configuration Mode!**");
+  oneLed(signalColor, 0);
+  pixels.show();
+}
+
+void settingsSaved() {
+
+  // Feedbak when the network credential is saved
+  Serial.println("**Network Setting Saved!**");
+  oneLed(savedColor, 0);
+  pixels.show();
+}

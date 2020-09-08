@@ -74,7 +74,9 @@ unsigned long colorArray[] = {
   0x500050
 };
 
-
+// Signal During bootup
+unsigned long signalColor = 0x000022;
+unsigned long savedColor = 0x002200;
 
 //-----------------------------------
 //---------Rotary Coder HERE---------
@@ -131,6 +133,7 @@ unsigned long startMillis = 0;
 unsigned long currentMillis = 0;
 unsigned long signalMillis = 0;
 int timeBetweenSamples = 5000;
+int signalDuration = 3000;
 
 // put your setup code here, to run once:
 void setup() {
@@ -144,11 +147,10 @@ void setup() {
   pixels.begin();
   dispMode = 0;
 
-
   // Hold 5 seconds for trigger detection
   startMillis = millis();
   signalMillis = millis();
-  while (millis() - startMillis <= 5000) {
+  while (millis() - startMillis <= signalDuration) {
     wifiManagerReset();
   }
 

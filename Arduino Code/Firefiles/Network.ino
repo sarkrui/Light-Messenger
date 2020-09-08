@@ -8,7 +8,7 @@ void bootSignal(bool state) {
       break;
 
     case false:
-      oneLed(0x220000, 0);
+      oneLed(signalColor, 0);
       pixels.show();
       break;
 
@@ -23,19 +23,22 @@ void wifiManagerReset() {
 
   byte demandTrigger = 0;
   demandTrigger = checkButton();
-  delay(50);
-  if (demandTrigger == 2) {
-    Serial.println("Double Click!");
-    //reset settings - for testing
-    WiFiManager wifiManager;
-    wifiManager.resetSettings();
-  }
-  // Hold  seconds for trigger detection
-  if (millis() - signalMillis >= 200) {
+  delay(10);
+
+  // Altering signal every 100 miliseconds
+  if (millis() - signalMillis >= 100 && demandTrigger == !2) {
     //Serial.print(".");
     bootSignal(signalState);
     signalState = !signalState;
     signalMillis = millis();
+  }
+  
+  if (demandTrigger == 2) {
+    //reset settings - for testing
+    WiFiManager wifiManager;
+    wifiManager.resetSettings();
+    Serial.println("Double Click!");
+    configEntered();
   }
 }
 
@@ -44,7 +47,7 @@ void autoAP() {
   //Local intialization. Once its business is done, there is no need to keep it around
   WiFiManager wifiManager;
   wifiManager.setMinimumSignalQuality(20);
-
+  configEntered();
   //tries to connect to last known settings
   //if it does not connect it starts an access point with the specified name
   //here  "AutoConnectAP" with password "password"
@@ -55,6 +58,7 @@ void autoAP() {
     ESP.reset();
     delay(5000);
   }
+  settingsSaved();
 }
 
 void checkNetwork() {
@@ -84,4 +88,3 @@ void dataSetup() {
   else {
     Serial.println("ERROR: " + firebaseData.errorReason());
   }
-}
