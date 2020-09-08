@@ -38,6 +38,28 @@ const String remote_device_id = "/YOUR_NAME";
 
 
 
+### Erase Flash
+
+In some cases, you might want to erase all contents of ESP8266 (including Wi-Fi settings, Sketch). You can try using `esptool.py` with below command line:
+
+```bash
+# List all connected serial devices
+ls /dev/tty.wchusbserial*
+
+# Get your nodemcu port id
+$/dev/tty.wchusbserial14540
+
+# Execute esptool.py -p [device_id] erase_flash
+$esptool.py -p /dev/tty.wchusbserial14540 erase_flash
+
+# If you have only one serial device connected, you could 
+$esptool.py -p /dev/tty.wchusbserial* erase_flash
+```
+
+
+
+
+
 ### Dependencies
 
 | Name | Version |
