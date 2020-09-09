@@ -87,3 +87,14 @@ $esptool.py -p /dev/tty.wchusbserial* erase_flash
 
 This is a give away for a left professor, Saskia Bakker from the TU Eindhoven. Although I redesigned completely the software layer, the physical form was heavily built upon her Ph.D. prototope, **Fireflies**. Besides, you could find my Wizard of Oz for the [initial demo](https://pxing.design/demo-on-saskias-farewell/) on her Goodbye party; I would like give **@mobizt** credit for developing the [Firebase Realtime Database library for ESP8266](https://github.com/mobizt/Firebase-ESP8266) as well as his time in fixing bugs. 
 
+
+
+## MIT License
+
+Copyright (c) 2020 P. XING (Sark)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
