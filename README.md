@@ -15,7 +15,7 @@ As we might live apart with our closed friends due to some reality resons which 
 
 
 
-### Config
+### Config in Sketch
 
 ```c++
 #define FIREBASE_HOST "xxxxxxxx.firebaseio.com" //Realtime database host without https:// 
@@ -36,9 +36,17 @@ const String remote_device_id = "/YOUR_NAME";
 #endif
 ```
 
+### Config after compile
+
+1. Powering up the `Light-Messenger`
+2. While it's blinking in `Red`, double-click to enter the Network configuration mode
+3. Using wireless terminal to connect to SSID `Light-Messenger-AP`
+4. Configurating the Wi-Fi settings according to your context
+5. Once the `Light-Messenger` turns Green, it's connected to Internet!
 
 
-### Erase Flash
+
+### Erase Flash (Optional)
 
 In some cases, you might want to erase all contents of ESP8266 (including Wi-Fi settings, Sketch). You can try using `esptool.py` with below command line:
 
@@ -77,7 +85,8 @@ $esptool.py -p /dev/tty.wchusbserial* erase_flash
 ### To-do
 
 - [x] Incorporate [AutoConnect](https://github.com/Hieromon/AutoConnect) for WLAN configuration at run time
-- [x] Adding instrction for connecting to Wi-Fi and restoring credentials 
+- [x] Adding instrction for connecting to Wi-Fi and restoring credentials
+- [ ] Add pre-compiled firmware for flashing
 - [ ] Construct an OOCSI-based version for better latency in Europe
 - [ ] Build 3D printed model to replace the laser cut base
 
