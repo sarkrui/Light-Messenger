@@ -50,21 +50,29 @@ const String remote_device_id = "/YOUR_NAME";
 
 In some cases, you might want to erase all contents of ESP8266 (including Wi-Fi settings, Sketch). You can try using `esptool.py` with below command line:
 
+List all connected serial devices
+
 ```bash
-# List all connected serial devices
 ls /dev/tty.wchusbserial*
-
-# Get your nodemcu port id
-$/dev/tty.wchusbserial14540
-
-# Execute esptool.py -p [device_id] erase_flash
-$esptool.py -p /dev/tty.wchusbserial14540 erase_flash
-
-# If you have only one serial device connected, you could 
-$esptool.py -p /dev/tty.wchusbserial* erase_flash
 ```
 
+Print your nodemcu `port-id`
 
+```bash
+$/dev/tty.wchusbserial14540
+```
+
+Execute esptool.py -p [device_id] erase_flash
+
+```bash
+esptool.py -p /dev/tty.wchusbserial14540 erase_flash
+```
+
+If you have only one serial device connected, you could 
+
+```bash
+esptool.py -p /dev/tty.wchusbserial* erase_flash
+```
 
 
 
@@ -86,7 +94,9 @@ $esptool.py -p /dev/tty.wchusbserial* erase_flash
 
 - [x] Incorporate [AutoConnect](https://github.com/Hieromon/AutoConnect) for WLAN configuration at run time
 - [x] Adding instrction for connecting to Wi-Fi and restoring credentials
+- [ ] Add [companion UI apps](https://github.com/mobizt/ESPForm) for credential management for `Firebase RTDB`
 - [ ] Add pre-compiled firmware for flashing
+- [ ] Add manual for setting up `Firebase RTDB` for the Project exclusively 
 - [ ] Construct an OOCSI-based version for better latency in Europe
 - [ ] Build 3D printed model to replace the laser cut base
 
@@ -94,7 +104,7 @@ $esptool.py -p /dev/tty.wchusbserial* erase_flash
 
 ### Credit
 
-This is a give away for a left professor, Saskia Bakker from the TU Eindhoven. Although I redesigned completely the software layer, the physical form was heavily built upon her Ph.D. prototope, **Fireflies**. Besides, you could find my Wizard of Oz for the [initial demo](https://pxing.design/demo-on-saskias-farewell/) on her Goodbye party; I would like give **@mobizt** credit for developing the [Firebase Realtime Database library for ESP8266](https://github.com/mobizt/Firebase-ESP8266) as well as his time in fixing bugs. 
+This is a give away for a resigned professor, Saskia Bakker from the TU Eindhoven. In this project, I redesigned completely the software layer, the physical form was heavily built upon Saskia's Ph.D. prototope, **Fireflies**. Thanks for that! Besides, you could find my Wizard of Oz for the [initial demo](https://pxing.design/demo-on-saskias-farewell/) on her Goodbye party; I would also like give **@mobizt** credit for developing the [Firebase Realtime Database library for ESP8266](https://github.com/mobizt/Firebase-ESP8266) as well as his time in fixing bugs. 
 
 
 
