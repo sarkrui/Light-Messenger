@@ -80,13 +80,13 @@ esptool.py -p /dev/tty.wchusbserial* erase_flash
 
 | Name | Version |
 | ---- | ---- |
-|Adafruit_NeoPixel.h| 1.3.3 |
-|FirebaseESP8266.h| 2.7.9 |
+|Adafruit_NeoPixel.h| [1.3.3](https://github.com/adafruit/Adafruit_NeoPixel/archive/1.3.3.zip) |
+|FirebaseESP8266.h| [2.7.9](https://github.com/mobizt/Firebase-ESP8266/archive/2.7.9.zip) |
 |ESP8266WiFi.h| 2.6.3 |
 |Arduino.h| 1.8.13 SDK |
-|FirebaseJson.h| 2.2.9 |
-|SimpleRotary.h| 1.1.2 |
-|[WiFIManager](https://github.com/tzapu/WiFiManager) by [tzapu](https://github.com/tzapu)| 0.15.0 |
+|FirebaseJson.h| [2.2.9](https://github.com/mobizt/FirebaseJson/archive/2.2.9.zip) |
+|SimpleRotary.h| [1.1.2](https://github.com/mprograms/SimpleRotary/archive/v1.1.2.zip) |
+|[WiFiManager](https://github.com/tzapu/WiFiManager) by [tzapu](https://github.com/tzapu)| [0.15.0](https://github.com/tzapu/WiFiManager/archive/0.15.0.zip) |
 
 
 
